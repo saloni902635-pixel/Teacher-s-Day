@@ -218,7 +218,14 @@ elif page == 1:
     st.markdown('<div class="small-label">Meet the person behind our class</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="photo-wrap reveal">', unsafe_allow_html=True)
-    st.image(str(PHOTO), width=330)
+    # Streamlit Cloud can be stricter about media files passed by path.
+    # Reading the JPEG as bytes makes the image upload/rendering reliable.
+    if PHOTO.is_file():
+        with open(PHOTO, "rb") as image_file:
+            image_bytes = image_file.read()
+        st.image(image_bytes, width=330)
+    else:
+        st.error("Ma'am's photo was not found. Keep assets/sakshi_mam.jpeg in the GitHub repository.")
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("""
